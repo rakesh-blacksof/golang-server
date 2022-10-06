@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/rakesh-gupta29/movie-server/internal/data"
@@ -12,7 +13,7 @@ func (app *application) getAllMovies(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("showing 10 latest movies"))
 }
 
-func (app *application) getMovie(w http.ResponseWriter, r *http.Request) {
+func (app *application) getMovieByID(w http.ResponseWriter, r *http.Request) {
 	id, err := app.readIDParams(r)
 	if err != nil {
 		app.errorNotFound(w, r)
@@ -55,4 +56,10 @@ func (app *application) addMovie(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Fprintf(w, "%+v\n", reqData)
+}
+
+func (app *application) contactFormSubmission(w http.ResponseWriter, r *http.Request) {
+	fromEmail := os.Getenv("fromEmail")
+	resString := "sending mail from " + fromEmail
+	w.Write([]byte(resString))
 }

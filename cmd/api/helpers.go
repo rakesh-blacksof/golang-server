@@ -73,3 +73,7 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, destina
 	}
 	return nil
 }
+
+func (app *application) handleContact(http.ResponseWriter, *http.Request) {
+
+}

@@ -9,11 +9,13 @@ import (
 func (app *application) routes() http.Handler {
 	router := httprouter.New()
 	router.NotFound = http.HandlerFunc(app.errorNotFound)
-	router.MethodNotAllowed = http.HandlerFunc(app.errorInvaidMethod)  // allow header is set automatically
-	router.HandlerFunc(http.MethodGet, "/v1/config", app.getAppConfig) //  app config
-	router.HandlerFunc(http.MethodGet, "/v1/movies", app.getAllMovies) // READ al movies
-	router.HandlerFunc(http.MethodPost, "/v1/movies", app.addMovie)    // CREATE
-	router.HandlerFunc(http.MethodGet, "/v1/movies/:id", app.getMovie) // READ
+	router.MethodNotAllowed = http.HandlerFunc(app.errorInvaidMethod)                    // allow header is set automatically
+	router.HandlerFunc(http.MethodGet, "/v1/config", app.getAppConfig)                   //  app config
+	router.HandlerFunc(http.MethodGet, "/v1/movies", app.getAllMovies)                   // READ all movies
+	router.HandlerFunc(http.MethodPost, "/v1/movies", app.addMovie)                      // CREATE
+	router.HandlerFunc(http.MethodGet, "/v1/movies/:id", app.getMovieByID)               // READ
+	router.HandlerFunc(http.MethodGet, "/v1/form/submission", app.contactFormSubmission) // READ
+	router.ServeFiles("/v1/static/*filepath", http.Dir("static"))
 	// router.HandlerFunc(http.MethodPut, "/v1/movies/:id", app.editMovie)      // UPDATE
 	// router.HandlerFunc(http.MethodDelete, "/v1/movies/:id", app.deleteMovie) // DELETE
 	// there are some scenorios where simple plain text error responses will
