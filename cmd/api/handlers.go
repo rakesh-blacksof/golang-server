@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
+	"net/smtp"
 	"time"
 
 	"github.com/rakesh-gupta29/movie-server/internal/data"
@@ -59,7 +59,11 @@ func (app *application) addMovie(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) contactFormSubmission(w http.ResponseWriter, r *http.Request) {
-	fromEmail := os.Getenv("fromEmail")
-	resString := "sending mail from " + fromEmail
-	w.Write([]byte(resString))
+	auth := smtp.PlainAuth("", "rakesh.blacksof@gmail.com", "bgrckvlutwlfakti", "smtp.gmail.com")
+	err := smtp.SendMail("smtp.gmail.com:587", auth, "rakesh.blacksof@gmail.com", []string{"ved.blacksof@gmail.com"}, []byte("kaise hai sir.From golang web app"))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	app.writeJSON(w, http.StatusOK, envelope{"res": "done"}, nil)
 }
